@@ -1,6 +1,7 @@
 // Constantes
 const STORAGE_KEY = 'temporizador_data';
 const STORAGE_EXPIRY_DAYS = 7;
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Estado de la aplicación
 let state = {
@@ -317,7 +318,7 @@ function saveToStorage() {
     const data = {
         persons: state.persons,
         timestamp: Date.now(),
-        expiryDate: Date.now() + (STORAGE_EXPIRY_DAYS * 24 * 60 * 60 * 1000)
+        expiryDate: Date.now() + (STORAGE_EXPIRY_DAYS * MILLISECONDS_PER_DAY)
     };
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
