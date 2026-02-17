@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Vista principal (configuración) -->
+    <div class="container" id="setupView">
         <h1>Temporizador para Asambleas</h1>
         
         <div class="mode-indicator">
-            <span id="modeDisplay">Modo: Ascendente</span>
+            <span id="modeDisplay">Modo: Ascendente ⬆</span>
         </div>
         
         <div class="timer-display">
@@ -19,13 +20,22 @@
         </div>
         
         <div class="controls">
-            <p class="help-text">Espacio: Iniciar/Pausar | ← →: Anterior/Siguiente | ↑ ↓: Cambiar Modo</p>
+            <p class="help-text">
+                Espacio: Iniciar/Pausar | ← →: Anterior/Siguiente | ↑ ↓: Cambiar Modo | G: Guardar tiempo | Esc: Salir
+            </p>
         </div>
         
         <div class="person-section">
             <div class="add-person">
                 <input type="text" id="personNameInput" placeholder="Nombre de la persona">
-                <button id="addPersonBtn">Agregar Persona</button>
+                <div class="time-inputs">
+                    <input type="number" id="hoursInput" min="0" max="23" value="0" placeholder="HH">
+                    <span class="time-separator">:</span>
+                    <input type="number" id="minutesInput" min="0" max="59" value="5" placeholder="MM">
+                    <span class="time-separator">:</span>
+                    <input type="number" id="secondsInput" min="0" max="59" value="0" placeholder="SS">
+                </div>
+                <button id="addPersonBtn">Agregar</button>
             </div>
             
             <div class="person-list" id="personList">
@@ -34,8 +44,30 @@
         </div>
         
         <div class="actions">
+            <button id="startPresentationBtn">Iniciar Presentación</button>
             <button id="clearDataBtn">Limpiar Datos</button>
         </div>
+
+        <div class="records-section">
+            <h2>Registros Guardados <small>(tecla G)</small></h2>
+            <div class="records-list" id="timeRecordsList">
+                <div class="empty-message">No hay registros. Presiona "G" para guardar el tiempo actual.</div>
+            </div>
+            <div class="records-actions">
+                <button id="clearRecordsBtn">Limpiar Registros</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista de presentación (fullscreen) -->
+    <div class="presentation" id="presentationView">
+        <div class="presentation-mode-indicator">
+            <span id="presentationModeDisplay">Ascendente ⬆</span>
+        </div>
+        <div class="presentation-name" id="presentationName">Nombre</div>
+        <div class="presentation-timer" id="presentationTimer">00:00:00</div>
+        <div class="presentation-progress" id="presentationProgress">1 / 1</div>
+        <button class="presentation-exit-btn" id="exitPresentationBtn">✕ Salir</button>
     </div>
     
     <script src="script.js"></script>

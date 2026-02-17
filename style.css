@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4a6da7 0%, #799fcc 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -14,6 +14,7 @@ body {
     padding: 20px;
 }
 
+/* ========== VISTA DE CONFIGURACIÓN ========== */
 .container {
     background: white;
     border-radius: 20px;
@@ -38,7 +39,7 @@ h1 {
 #modeDisplay {
     display: inline-block;
     padding: 10px 20px;
-    background: #667eea;
+    background: #4a6da7;
     color: white;
     border-radius: 25px;
     font-weight: bold;
@@ -53,8 +54,8 @@ h1 {
 #timerDisplay {
     font-size: 4rem;
     font-weight: bold;
-    color: #667eea;
-    font-family: 'Courier New', monospace;
+    color: #4a6da7;
+    font-family: 'Arial', sans-serif;
 }
 
 .controls {
@@ -78,10 +79,13 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 #personNameInput {
     flex: 1;
+    min-width: 150px;
     padding: 12px 15px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
@@ -91,18 +95,59 @@ h1 {
 
 #personNameInput:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #4a6da7;
+}
+
+/* Inputs de tiempo */
+.time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f5f5f5;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+}
+
+.time-inputs input[type="number"] {
+    width: 50px;
+    padding: 8px 4px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.time-inputs input[type="number"]::-webkit-outer-spin-button,
+.time-inputs input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.time-inputs input[type="number"]:focus {
+    outline: none;
+    border-color: #4a6da7;
+}
+
+.time-separator {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #666;
 }
 
 #addPersonBtn {
     padding: 12px 25px;
-    background: #667eea;
+    background: #4a6da7;
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
+    white-space: nowrap;
 }
 
 #addPersonBtn:hover {
@@ -123,13 +168,22 @@ h1 {
     background: #f8f9fa;
     border-radius: 10px;
     transition: all 0.3s;
+    cursor: pointer;
+}
+
+.person-item:hover {
+    background: #e9ecef;
 }
 
 .person-item.active {
-    background: #667eea;
+    background: #4a6da7;
     color: white;
     transform: scale(1.02);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.person-item.active:hover {
+    background: #5568d3;
 }
 
 .person-info {
@@ -146,6 +200,7 @@ h1 {
 .person-time {
     font-family: 'Courier New', monospace;
     font-size: 1rem;
+    color: #4a6da7;
 }
 
 .person-item.active .person-time {
@@ -160,6 +215,7 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
+    font-size: 0.85rem;
 }
 
 .delete-btn:hover {
@@ -167,15 +223,39 @@ h1 {
 }
 
 .person-item.active .delete-btn {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.person-item.active .delete-btn:hover {
     background: #c0392b;
 }
 
 .actions {
     text-align: center;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#startPresentationBtn {
+    padding: 14px 35px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#startPresentationBtn:hover {
+    background: #219a52;
 }
 
 #clearDataBtn {
-    padding: 12px 25px;
+    padding: 14px 25px;
     background: #e74c3c;
     color: white;
     border: none;
@@ -194,4 +274,285 @@ h1 {
     color: #999;
     padding: 30px;
     font-style: italic;
+}
+
+/* ========== REGISTROS GUARDADOS ========== */
+.records-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #eee;
+}
+
+.records-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.records-section h2 small {
+    color: #999;
+    font-weight: normal;
+    font-size: 0.75rem;
+}
+
+.records-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4a6da7;
+}
+
+.record-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.record-name {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+}
+
+.record-date {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+.record-time-info {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px 8px;
+    align-items: center;
+    text-align: right;
+}
+
+.record-label {
+    font-size: 0.7rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.record-assigned {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    color: #888;
+}
+
+.record-time {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a6da7;
+}
+
+.record-time.overtime {
+    color: #e74c3c;
+}
+
+.records-actions {
+    text-align: center;
+    margin-top: 12px;
+}
+
+#clearRecordsBtn {
+    padding: 8px 20px;
+    background: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#clearRecordsBtn:hover {
+    background: #7f8c8d;
+}
+
+/* Notificación de guardado en presentación */
+.save-notification {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 30px;
+    background: rgba(39, 174, 96, 0.9);
+    color: white;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 10000;
+    animation: slideUp 0.3s ease-out;
+}
+
+.save-notification.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ========== VISTA DE PRESENTACIÓN ========== */
+.presentation {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 9999;
+    user-select: none;
+    overflow: hidden;
+}
+
+.presentation.active {
+    display: flex;
+}
+
+.presentation-mode-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+#presentationModeDisplay {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.presentation-name {
+    color: #ffffff;
+    font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    margin-top: 60px;
+    text-align: center;
+    padding: 0 40px;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.presentation-timer {
+    color: #ffffff;
+    font-size: 22vw;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0vw;
+    text-shadow: 0 0 60px rgba(102, 126, 234, 0.4);
+    line-height: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.presentation-progress {
+    display: none;
+}
+
+.presentation-exit-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.presentation-exit-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+/* Timer parpadeante cuando está en pausa en presentación */
+.presentation-timer.paused {
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Timer rojo cuando llega a 0 en modo descendente */
+.presentation-timer.time-up {
+    color: #e74c3c;
+    text-shadow: 0 0 40px rgba(231, 76, 60, 0.6);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    #timerDisplay {
+        font-size: 2.5rem;
+    }
+
+    .add-person {
+        flex-direction: column;
+    }
+
+    #personNameInput {
+        min-width: auto;
+    }
+
+    .time-inputs {
+        justify-content: center;
+    }
+
+    .presentation-name {
+        font-size: 1.8rem;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .presentation-name {
+        font-size: 1.4rem;
+        margin-top: 30px;
+    }
 }
