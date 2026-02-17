@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador - Asambleas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Temporizador para Asambleas</h1>
+        
+        <div class="mode-indicator">
+            <span id="modeDisplay">Modo: Ascendente</span>
+        </div>
+        
+        <div class="timer-display">
+            <span id="timerDisplay">00:00:00</span>
+        </div>
+        
+        <div class="controls">
+            <p class="help-text">Espacio: Iniciar/Pausar | ← →: Anterior/Siguiente | ↑ ↓: Cambiar Modo</p>
+        </div>
+        
+        <div class="person-section">
+            <div class="add-person">
+                <input type="text" id="personNameInput" placeholder="Nombre de la persona">
+                <button id="addPersonBtn">Agregar Persona</button>
+            </div>
+            
+            <div class="person-list" id="personList">
+                <!-- La lista de personas se generará dinámicamente -->
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button id="clearDataBtn">Limpiar Datos</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

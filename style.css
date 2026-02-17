@@ -1,0 +1,197 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.mode-indicator {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#modeDisplay {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.timer-display {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#timerDisplay {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #667eea;
+    font-family: 'Courier New', monospace;
+}
+
+.controls {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.help-text {
+    color: #666;
+    font-size: 0.9rem;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.person-section {
+    margin-bottom: 30px;
+}
+
+.add-person {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#personNameInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+#personNameInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#addPersonBtn {
+    padding: 12px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#addPersonBtn:hover {
+    background: #5568d3;
+}
+
+.person-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.person-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.person-item.active {
+    background: #667eea;
+    color: white;
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.person-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.person-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.person-time {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+}
+
+.person-item.active .person-time {
+    color: white;
+}
+
+.delete-btn {
+    padding: 8px 15px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+.person-item.active .delete-btn {
+    background: #c0392b;
+}
+
+.actions {
+    text-align: center;
+}
+
+#clearDataBtn {
+    padding: 12px 25px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#clearDataBtn:hover {
+    background: #c0392b;
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    font-style: italic;
+}
