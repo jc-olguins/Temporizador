@@ -49,6 +49,24 @@ function setupEventListeners() {
     
     // Teclas del teclado
     document.addEventListener('keydown', handleKeyPress);
+    
+    // Event delegation para la lista de personas
+    elements.personList.addEventListener('click', (e) => {
+        // Click en botón eliminar
+        if (e.target.classList.contains('delete-btn')) {
+            e.stopPropagation();
+            const personId = parseInt(e.target.dataset.personId);
+            deletePerson(personId);
+            return;
+        }
+        
+        // Click en item de persona
+        const personItem = e.target.closest('.person-item');
+        if (personItem) {
+            const index = parseInt(personItem.dataset.index);
+            selectPerson(index);
+        }
+    });
 }
 
 // Manejar teclas
@@ -261,31 +279,6 @@ function renderPersonList() {
             </button>
         </div>
     `).join('');
-    
-    // Agregar event listeners
-    attachPersonListEventListeners();
-}
-
-// Agregar event listeners a la lista de personas
-function attachPersonListEventListeners() {
-    // Evento de click en items de persona
-    const personItems = elements.personList.querySelectorAll('.person-item');
-    personItems.forEach((item) => {
-        item.addEventListener('click', (e) => {
-            const index = parseInt(item.dataset.index);
-            selectPerson(index);
-        });
-    });
-    
-    // Evento de click en botones eliminar
-    const deleteButtons = elements.personList.querySelectorAll('.delete-btn');
-    deleteButtons.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const personId = parseInt(btn.dataset.personId);
-            deletePerson(personId);
-        });
-    });
 }
 
 // Seleccionar persona
