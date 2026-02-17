@@ -86,7 +86,7 @@ function handleKeyPress(e) {
 function addPerson() {
     const name = elements.personNameInput.value.trim();
     if (!name) {
-        alert('Por favor ingrese un nombre');
+        alert('Por favor ingresa un nombre');
         return;
     }
     
@@ -235,6 +235,13 @@ function formatTime(ms) {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+// Escapar HTML para prevenir XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // Renderizar lista de personas
 function renderPersonList() {
     if (state.persons.length === 0) {
@@ -244,16 +251,41 @@ function renderPersonList() {
     
     elements.personList.innerHTML = state.persons.map((person, index) => `
         <div class="person-item ${index === state.currentPersonIndex ? 'active' : ''}" 
-             onclick="selectPerson(${index})">
+             data-index="${index}">
             <div class="person-info">
-                <span class="person-name">${person.name}</span>
+                <span class="person-name">${escapeHtml(person.name)}</span>
                 <span class="person-time">${formatTime(person.time)}</span>
             </div>
-            <button class="delete-btn" onclick="event.stopPropagation(); deletePerson(${person.id})">
+            <button class="delete-btn" data-person-id="${person.id}">
                 Eliminar
             </button>
         </div>
     `).join('');
+    
+    // Agregar event listeners
+    attachPersonListEventListeners();
+}
+
+// Agregar event listeners a la lista de personas
+function attachPersonListEventListeners() {
+    // Evento de click en items de persona
+    const personItems = elements.personList.querySelectorAll('.person-item');
+    personItems.forEach((item) => {
+        item.addEventListener('click', (e) => {
+            const index = parseInt(item.dataset.index);
+            selectPerson(index);
+        });
+    });
+    
+    // Evento de click en botones eliminar
+    const deleteButtons = elements.personList.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const personId = parseInt(btn.dataset.personId);
+            deletePerson(personId);
+        });
+    });
 }
 
 // Seleccionar persona
