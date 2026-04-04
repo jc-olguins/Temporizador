@@ -8,12 +8,11 @@ let state = {
     persons: [],
     currentPersonIndex: -1,
     isRunning: false,
-    isAscending: true, // true = ascendente, false = descendente
+    isAscending: false, // true = ascendente, false = descendente
     isPresentationMode: false,
     startTime: null,
     elapsedTime: 0,
-    intervalId: null,
-    savedCurrentPerson: false // true si ya se guardó el tiempo de la persona actual con G
+    intervalId: null
 };
 
 // Elementos del DOM
@@ -190,10 +189,16 @@ function updatePresentationTimer() {
     let timeToDisplay;
     let isOvertime = false;
     
+    const currentPerson = state.persons[state.currentPersonIndex];
+
     if (state.isAscending) {
-        timeToDisplay = state.elapsedTime;
+        if (currentPerson && state.elapsedTime > currentPerson.time) {
+            timeToDisplay = state.elapsedTime - currentPerson.time;
+            isOvertime = true;
+        } else {
+            timeToDisplay = state.elapsedTime;
+        }
     } else {
-        const currentPerson = state.persons[state.currentPersonIndex];
         if (currentPerson) {
             const remaining = currentPerson.time - state.elapsedTime;
             if (remaining <= 0) {
@@ -210,7 +215,7 @@ function updatePresentationTimer() {
     const prefix = isOvertime ? '+' : '';
     elements.presentationTimer.textContent = prefix + formatTime(timeToDisplay);
     
-    // Clase para cuando pasa de 0 en modo descendente
+    // Clase para cuando se pasa del tiempo asignado
     if (isOvertime) {
         elements.presentationTimer.classList.add('time-up');
     } else {
@@ -286,12 +291,11 @@ function navigatePerson(direction) {
         stopTimer();
     }
     
-    // Auto-guardar registro si no se guardó antes con G
-    if (!state.savedCurrentPerson && state.currentPersonIndex >= 0 && state.elapsedTime > 0) {
+    // Auto-guardar registro al navegar
+    if (state.currentPersonIndex >= 0 && state.elapsedTime > 0) {
         saveTimeRecord();
     }
     
-    state.savedCurrentPerson = false;
     state.currentPersonIndex += direction;
     
     // Wrap around
@@ -314,12 +318,11 @@ function navigatePerson(direction) {
 function selectPerson(index) {
     if (state.isRunning) stopTimer();
     
-    // Auto-guardar si no se guardó antes
-    if (!state.savedCurrentPerson && state.currentPersonIndex >= 0 && state.elapsedTime > 0) {
+    // Auto-guardar al seleccionar otra persona
+    if (state.currentPersonIndex >= 0 && state.elapsedTime > 0) {
         saveTimeRecord();
     }
     
-    state.savedCurrentPerson = false;
     state.currentPersonIndex = index;
     state.elapsedTime = 0;
     updateTimerDisplay();
@@ -330,10 +333,6 @@ function selectPerson(index) {
 
 function switchMode(ascending) {
     state.isAscending = ascending;
-    
-    // Reiniciar el elapsed time al cambiar de modo
-    if (state.isRunning) stopTimer();
-    state.elapsedTime = 0;
     
     updateModeDisplay();
     
@@ -385,12 +384,6 @@ function stopTimer() {
         state.intervalId = null;
     }
     
-    // Guardar el tiempo acumulado de la persona actual (solo en modo ascendente)
-    if (state.isAscending && state.currentPersonIndex >= 0 && state.currentPersonIndex < state.persons.length) {
-        state.persons[state.currentPersonIndex].time = state.elapsedTime;
-        saveToStorage();
-    }
-    
     if (state.isPresentationMode) {
         updatePresentationTimer();
     } else {
@@ -404,10 +397,16 @@ function updateTimerDisplay() {
     let timeToDisplay;
     let isOvertime = false;
     
+    const currentPerson = state.persons[state.currentPersonIndex];
+
     if (state.isAscending) {
-        timeToDisplay = state.elapsedTime;
+        if (currentPerson && state.elapsedTime > currentPerson.time) {
+            timeToDisplay = state.elapsedTime - currentPerson.time;
+            isOvertime = true;
+        } else {
+            timeToDisplay = state.elapsedTime;
+        }
     } else {
-        const currentPerson = state.persons[state.currentPersonIndex];
         if (currentPerson) {
             const remaining = currentPerson.time - state.elapsedTime;
             if (remaining <= 0) {
@@ -474,7 +473,6 @@ function renderPersonList() {
 
 function saveTimeRecord() {
     if (state.persons.length === 0 || state.currentPersonIndex === -1) return;
-    if (state.savedCurrentPerson) return; // Ya se guardó, no duplicar
     
     const person = state.persons[state.currentPersonIndex];
     let usedTime = state.elapsedTime; // Tiempo real usado
@@ -501,8 +499,6 @@ function saveTimeRecord() {
     let records = loadTimeRecords();
     records.push(record);
     localStorage.setItem('temporizador_records', JSON.stringify(records));
-    
-    state.savedCurrentPerson = true;
     
     renderTimeRecords();
     
